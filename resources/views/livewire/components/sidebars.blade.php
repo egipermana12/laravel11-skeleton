@@ -13,29 +13,19 @@
     </span>
     <nav class="h-full overflow-y-auto overflow-x-hidden my-2">
         <ul class="">
-            <li>
-                <a href="#" class="sidebar-href">
-                    <i class="fa-brands fa-red-river fa-xl"></i>
-                    <span class="ms-3">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="sidebar-href">
-                    <i class="fa-brands fa-red-river fa-xl"></i>
-                    <span class="ms-3">Dashboard</span>
-                </a>
-            </li>
-            <li>
+            @foreach ($menus as $value)
+                @if (count($value->children) > 0)
                 <div
                     class="hover:bg-gray-600 hover:text-gray-100 rounded"
                     x-data="{openSideChild : false}"
+                    wire:key="{{ $value->id }}"
                 >
                     <button
                         class="sidebar-button-dropdown"
                         @click="openSideChild = !openSideChild"
                     >
-                        <i class="fa-brands fa-red-river fa-xl"></i>
-                        <span class="ms-3">Dashboard</span>
+                        <i class="{{$value->class}}"></i>
+                        <span class="ms-3">{{$value->menu_title}}</span>
                         <i class="fa-solid fa-chevron-down justify-self-end"
                             :class = "[openSideChild ? 'transform rotate-180' : 'transform rotate-0']"></i>
                     </button>
@@ -44,15 +34,22 @@
                         x-show="openSideChild"
                         @click.outside="openSideChild = false"
                     >
+                        @foreach($value->children as $sub)
                         <li>
-                            <a href="" class="sidebar-button-dropdown-href">Anggota</a>
+                            <a href={{$sub->slug}} class="sidebar-button-dropdown-href">{{$sub->menu_title}}</a>
                         </li>
-                        <li>
-                            <a href="" class="sidebar-button-dropdown-href">Simpanan</a>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
-            </li>
+                @else
+                    <li wire:key="{{ $value->id }}">
+                        <a href={{ $value->slug }} class="sidebar-href">
+                            <i class="{{ $value->class }}"></i>
+                            <span class="ms-3">{{ $value->menu_title }}</span>
+                        </a>
+                    </li>
+                @endif
+            @endforeach
         </ul>
     </nav>
 </aside>

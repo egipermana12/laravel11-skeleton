@@ -13,17 +13,17 @@ class Menu extends Model
 
     public function parent(): HasOne
     {
-        return $this->hasOne(Menu::class, 'id', 'parent_id')->orderBy('sort_order');
+        return $this->hasOne(Menu::class, 'id', 'parent_id');
     }
 
-    public function childern(): HasMany
+    public function children(): HasMany
     {
-        return $this->hasMany(Menu::class, 'parent_id', 'id')->orderBy('sort_order');
+        return $this->hasMany(Menu::class, 'parent_id', 'id');
     }
 
     public function tree()
     {
-        return static::with(implode('.', array_fill(0, 100, 'childern')))
+        return static::with(implode('.', array_fill(0, 100, 'children')))
             ->where('parent_id', '=', 0)
             ->orderBy('sort_order')->get();
     }

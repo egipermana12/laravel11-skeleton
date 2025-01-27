@@ -10,9 +10,10 @@ class Sidebars extends Component
 {
     public Collection $menus;
 
-    public  function mount(): void {
-        $call = new Menu();
-        $this->menus = $call->tree();
+    public function mount(): void
+    {
+        $callMenu = new Menu();
+        $this->menus = $callMenu->tree();
     }
 
     public function render()
