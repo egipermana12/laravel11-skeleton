@@ -14,13 +14,13 @@
     <nav class="h-full overflow-y-auto overflow-x-hidden my-2">
         <ul class="">
             <li>
-                <a href="#" class="w-full grid grid-flow-col auto-cols-max items-center gap-2 px-3 py-3 rounded text-white hover:bg-gray-600 hover:text-gray-100 text-base font-semibold">
+                <a href="#" class="sidebar-href">
                     <i class="fa-brands fa-red-river fa-xl"></i>
                     <span class="ms-3">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="w-full grid grid-flow-col auto-cols-max items-center gap-2 px-3 py-3 rounded text-white hover:bg-gray-600 hover:text-gray-100 text-base font-semibold">
+                <a href="#" class="sidebar-href">
                     <i class="fa-brands fa-red-river fa-xl"></i>
                     <span class="ms-3">Dashboard</span>
                 </a>
@@ -31,7 +31,7 @@
                     x-data="{openSideChild : false}"
                 >
                     <button
-                        class="w-full grid grid-cols-[20px_max-content_1fr] items-center gap-2 px-3 py-3 rounded text-white  text-base font-semibold"
+                        class="sidebar-button-dropdown"
                         @click="openSideChild = !openSideChild"
                     >
                         <i class="fa-brands fa-red-river fa-xl"></i>
@@ -45,10 +45,10 @@
                         @click.outside="openSideChild = false"
                     >
                         <li>
-                            <a href="" class="w-full flex items-center text-base font-semibold text-white pb-2">Anggota</a>
+                            <a href="" class="sidebar-button-dropdown-href">Anggota</a>
                         </li>
                         <li>
-                            <a href="" class="w-full flex items-center text-base font-semibold text-white pb-2">Simpanan</a>
+                            <a href="" class="sidebar-button-dropdown-href">Simpanan</a>
                         </li>
                     </ul>
                 </div>
