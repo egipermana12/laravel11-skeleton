@@ -15,35 +15,45 @@
         <ul class="">
             @foreach ($menus as $value)
                 @if (count($value->children) > 0)
+                @php
+                    $isActive = collect($value->children)->contains(function ($sub) {
+                        return request()->is($sub->slug);
+                    });
+                @endphp
                 <div
                     class="hover:bg-gray-600 hover:text-gray-100 rounded"
-                    x-data="{openSideChild : false}"
+                    x-data="{openSideChild : {{$isActive ? "'block'" : "'hidden'" }} }"
                     wire:key="{{ $value->id }}"
                 >
                     <button
                         class="sidebar-button-dropdown"
-                        @click="openSideChild = !openSideChild"
+                        @click="openSideChild = openSideChild === 'hidden' ? 'block' : 'hidden' "
                     >
                         <i class="{{$value->class}}"></i>
                         <span class="ms-3">{{$value->menu_title}}</span>
                         <i class="fa-solid fa-chevron-down justify-self-end"
-                            :class = "[openSideChild ? 'transform rotate-180' : 'transform rotate-0']"></i>
+                            :class = "openSideChild === 'hidden' ? 'transform rotate-180' : 'transform rotate-0'"></i>
                     </button>
                     <ul id="dropdown-sidebar"
                         class="px-14"
-                        x-show="openSideChild"
-                        @click.outside="openSideChild = false"
+                        :class="openSideChild"
                     >
                         @foreach($value->children as $sub)
                         <li>
-                            <a href={{$sub->slug}} class="sidebar-button-dropdown-href">{{$sub->menu_title}}</a>
+                            <a
+                            href={{$sub->slug}}
+                            wire:navigate
+                            class="sidebar-button-dropdown-href"
+                                >
+                                {{$sub->menu_title}}
+                            </a>
                         </li>
                         @endforeach
                     </ul>
                 </div>
                 @else
                     <li wire:key="{{ $value->id }}">
-                        <a href={{ $value->slug }} class="sidebar-href">
+                <a href={{ $value->slug }} wire:navigate wire:current="bg-gray-600" class="sidebar-href">
                             <i class="{{ $value->class }}"></i>
                             <span class="ms-3">{{ $value->menu_title }}</span>
                         </a>
