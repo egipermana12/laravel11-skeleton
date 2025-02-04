@@ -13,6 +13,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('counter', Counter::class);
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('anggota', Counter::class);
+});
 
 require __DIR__.'/auth.php';

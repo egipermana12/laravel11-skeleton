@@ -16,18 +16,28 @@ class MenuSeeder extends Seeder
     {
         $data = [
             [
+                'id' => 1,
                 'menu_title' => 'Dashboard',
                 'class' => 'fa-brands fa-red-river fa-xl',
                 'parent_id' => 0,
                 'sort_order' => 1,
-                'slug' => '/dashboard'
+                'slug' => 'dashboard'
             ],
             [
-                'menu_title' => 'Chart',
+                'id' => 2,
+                'menu_title' => 'Master Data',
                 'class' => 'fa-solid fa-chart-pie fa-xl',
                 'parent_id' => 0,
                 'sort_order' => 2,
-                'slug' => '/chart'
+                'slug' => '#'
+            ],
+            [
+                'id' => 3,
+                'menu_title' => 'Anggota',
+                'class' => 'fa-solid fa-chart-pie fa-xl',
+                'parent_id' => 2,
+                'sort_order' => 1,
+                'slug' => 'anggota'
             ],
         ];
         DB::table('menus')->insert($data);
