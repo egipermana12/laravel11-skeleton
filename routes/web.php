@@ -13,7 +13,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::group(['middleware' => ['role:admin']], function () {
+Route::group(['middleware' => ['auth','role:admin']], function () {
     Route::get('anggota', Counter::class);
 });
 
