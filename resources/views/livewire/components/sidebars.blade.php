@@ -17,12 +17,13 @@
                 @if (count($value->children) > 0)
                 @php
                     $isActive = collect($value->children)->contains(function ($sub) {
-                        return request()->is($sub->slug);
+                        return request()->routeIs($sub->slug);
                     });
                 @endphp
                 <div
                     class="hover:bg-gray-600 hover:text-gray-100 rounded"
                     x-data="{openSideChild : {{$isActive ? "'block'" : "'hidden'" }} }"
+                    :class = "openSideChild === 'block' ? 'bg-gray-600' : '' "
                     wire:key="{{ $value->id }}"
                 >
                     <button
@@ -41,7 +42,7 @@
                         @foreach($value->children as $sub)
                         <li>
                             <a
-                            href={{$sub->slug}}
+                            href={{ route($sub->slug) }}
                             wire:navigate
                             class="sidebar-button-dropdown-href"
                                 >
@@ -53,7 +54,7 @@
                 </div>
                 @else
                     <li wire:key="{{ $value->id }}">
-                <a href={{ $value->slug }} wire:navigate wire:current="bg-gray-600" class="sidebar-href">
+                <a href={{ route($value->slug) }} wire:navigate wire:current="bg-gray-600" class="sidebar-href">
                             <i class="{{ $value->class }}"></i>
                             <span class="ms-3">{{ $value->menu_title }}</span>
                         </a>
