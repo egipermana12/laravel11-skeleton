@@ -95,6 +95,11 @@ class Users extends Component
         HTML;
     }
 
+    public function openModal()
+    {
+        $this->dispatch('openUserForm');
+    }
+
     public function render()
     {
 
@@ -107,4 +112,5 @@ class Users extends Component
             'roles' => $roles
         ]);
     }
+
 }

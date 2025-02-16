@@ -42,6 +42,7 @@
                             </select>
                         </div>
                         <button
+                            wire:click="openModal"
                             class="bg-indigo-700 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-indigo-900">
                             <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Add User
                         </button>
@@ -101,4 +102,5 @@
             </div>
         </div>
     </div>
+    <livewire:pages.users.user-form />
 </div>
