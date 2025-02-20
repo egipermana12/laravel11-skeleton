@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",
-        "alpinejs": "^3.14.8"
+        "alpinejs": "^3.14.8",
+        "toastify-js": "^1.12.0"
     }
 }

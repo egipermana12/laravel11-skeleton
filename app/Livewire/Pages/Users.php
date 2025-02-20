@@ -18,6 +18,9 @@ class Users extends Component
     public $checked = [];
     public $selectAll = false;
 
+    public $listeners = ['refreshPageUser' => 'refreshPageUser'];
+    
+
     public function fetchUsers()
     {
 
@@ -98,6 +101,11 @@ class Users extends Component
     public function openModal()
     {
         $this->dispatch('openUserForm');
+    }
+
+    public function refreshPageUser()
+    {
+        $this->resetPage();
     }
 
     public function render()

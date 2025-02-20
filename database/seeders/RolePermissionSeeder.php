@@ -18,8 +18,5 @@ class RolePermissionSeeder extends Seeder
         Role::create(['name' => 'operator']);
 
         Permission::create(['name' => 'manage_master_data']);
-
-        $admin = User::factory()->create();
-        $admin->assignRole('admin');
     }
 }
