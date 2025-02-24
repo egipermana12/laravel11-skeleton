@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Users;
 
 use App\Livewire\Forms\UserFormAction;
+use Livewire\Attributes\On;
 use Spatie\Permission\Models\Role;
 use Livewire\Component;
 
@@ -12,8 +13,8 @@ class UserForm extends Component
 
     public $isOpen = false;
 
-    public $listeners = ['openUserForm' => 'openModal'];
 
+    #[On('openUserForm')]
     public function openModal()
     {
         $this->isOpen = true;

@@ -78,10 +78,6 @@ class Users extends Component
         $this->selectAll = false;
     }
 
-    public function deleteUsers()
-    {
-        dd($this->checked);
-    }
 
     public function placeholder()
     {
@@ -98,14 +94,14 @@ class Users extends Component
         HTML;
     }
 
-    public function openModal()
-    {
-        $this->dispatch('openUserForm');
-    }
-
     public function refreshPageUser()
     {
         $this->resetPage();
+    }
+
+    public function deleteUsers()
+    {
+        dd($this->checked);
     }
 
     public function render()

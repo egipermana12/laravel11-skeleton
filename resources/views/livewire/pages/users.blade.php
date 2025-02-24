@@ -34,11 +34,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button wire:click="openModal"
-                            class="bg-indigo-700 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-indigo-900">
+                        <button wire:click="$dispatch('openUserForm')"
+                            class="bg-gray-900 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-gray-700">
                             <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Add User
                         </button>
-                        <button wire:click="deleteUsers"
+                        <button
                             class="bg-red-700 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-red-900"
                             :class="{{count($checked) > 0 ? "'block'" : "'hidden'" }}">
                             Delete User
@@ -57,7 +57,7 @@
                             <th class="px-2 py-4">Nama</th>
                             <th class="px-2 py-4">Email</th>
                             <th class="px-2 py-4">Role</th>
-                            <th class="px-2 py-4">Aksi</th>
+                            <th class="px-2 py-4 text-center" width="8%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="border-b border-gray-100 text-sm" wire.loading.class="opacity-50">
@@ -78,6 +78,18 @@
                                 <x-badge role="No Roe" />
                                 @endif
                             </td>
+                            <td class="px-2 py-4">
+                                <div class="flex items-center justify-center gap-x-3">
+                                    <button wire:click="$dispatch('openUserEdit', {id: {{$user->id}} })"
+                                        class="cursor-pointer text-center"><i
+                                            class="fa-solid fa-pen-to-square text-slate-400 hover:text-blue-600 text-xs"></i></button>
+                                    <button
+                                        wire:click="$dispatch('openUserDelete', {id: {{$user->id}}, name: '{{$user->name}}' })"
+                                        class="cursor-pointer text-center">
+                                        <i class="fa-solid fa-trash text-slate-400 hover:text-red-600 text-xs"></i></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -89,4 +101,6 @@
         </div>
     </div>
     <livewire:pages.users.user-form />
+    <livewire:pages.users.user-edit />
+    <livewire:pages.users.user-delete />
 </div>
