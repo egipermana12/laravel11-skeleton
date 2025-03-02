@@ -124,7 +124,7 @@ class UserFormAction extends Form
 
         // Pastikan semua permissions disimpan dengan benar
         if ($this->permissions) {
-            $validPermissions = array_filter($this->permissions, function ($permissionValue) {
+            $validPermissions = collect($this->permissions)->filter(function ($permissionValue) {
                 return Permission::where('name', $permissionValue)->exists();
             });
 

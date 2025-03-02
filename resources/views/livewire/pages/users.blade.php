@@ -14,7 +14,7 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <div class="my-2 flex items-center justify-between">
-                    <x-text-input wire:model.live="cariUser" type="text" id="cariUser" name="cariUser"
+                    <x-text-input wire:model.live="cariUser" type="text" id="cariUser"
                         class="w-1/4 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                         placeholder="cari nama atau email" autocomplete="off" />
                     <div class="flex items-center justify-between gap-x-2">
@@ -54,8 +54,12 @@
                                 <input wire:model.live="selectAll" type="checkbox"
                                     class="w-4 h-4 text-center text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" />
                             </th>
-                            <th class="px-2 py-4">Nama</th>
-                            <th class="px-2 py-4">Email</th>
+                            <th wire:click="sortField('name')" class="px-2 py-4 cursor-pointer">
+                                <x-sort sortDirection="{{$sortDirection}}" /> Nama
+                            </th>
+                            <th wire:click="sortField('email')" class="px-2 py-4 cursor-pointer">
+                                <x-sort sortDirection="{{$sortDirection}}" /> Email
+                            </th>
                             <th class="px-2 py-4">Role</th>
                             <th class="px-2 py-4 text-center" width="8%">Aksi</th>
                         </tr>
@@ -95,7 +99,7 @@
                     </tbody>
                 </table>
                 <div class="mt-4">
-                    {{ $users->links() }}
+                    {{ $users->onEachSide(3)->links() }}
                 </div>
             </div>
         </div>

@@ -3,20 +3,28 @@
 namespace App\Livewire\Pages;
 
 use Illuminate\Database\Eloquent\Collection;
+use App\Livewire\Forms\UserFormAction;
 use Livewire\Component;
 use App\Models\User;
+use App\Traits\WithSorting;
 use Spatie\Permission\Models\Role;
 use Livewire\WithPagination;
 
 class Users extends Component
 {
+    public UserFormAction $form;
+
     use WithPagination;
+    use WithSorting;
 
     public $cariUser = '';
     public $cariRole = '';
-    public $pageStart = 10;
     public $checked = [];
     public $selectAll = false;
+
+    public $sortBy = 'id';
+    public $sortDirection = 'asc';
+    public $pageStart = 10;
 
     public $listeners = ['refreshPageUser' => 'refreshPageUser'];
     
@@ -39,7 +47,7 @@ class Users extends Component
             });
         }
 
-        $users = $query->orderBy('id')->paginate($this->pageStart);
+        $users = $query->orderBy($this->sortBy, $this->sortDirection)->paginate($this->pageStart);
         return $users;
     }
 
