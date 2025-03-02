@@ -3,10 +3,13 @@
 namespace App\Livewire\Pages\Users;
 
 use App\Livewire\Forms\UserFormAction;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\On;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Livewire\Component;
 
+#[Lazy]
 class UserForm extends Component
 {
     public UserFormAction $form;
@@ -44,6 +47,9 @@ class UserForm extends Component
     public function render()
     {
         $roles = Role::all();
-        return view('livewire.pages.users.user-form')->with(compact('roles'));
+        $permissions = Permission::all()->groupBy(function($item){
+            return explode('.',$item->name)[0];
+        });
+        return view('livewire.pages.users.user-form')->with(compact('roles'))->with(compact('permissions'));
     }
 }

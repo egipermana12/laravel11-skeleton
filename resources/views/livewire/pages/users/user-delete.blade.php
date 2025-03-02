@@ -8,7 +8,7 @@
             {{ __('Batal') }}
         </x-primary-button>
         <x-primary-button wire:click="delete" wire:loading.attr="disable" class="ms-4">
-            {{ __('Simpan') }}
+            {{ __('Yakin') }}
         </x-primary-button>
     </div>
 </x-modalcustom>

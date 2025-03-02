@@ -27,20 +27,41 @@
             </div>
             <div>
                 <x-input-label class="text-xs" for="form.password" :value="__('Password')" />
-                <x-text-input wire:model="form.password" id="password" type="password" class="mt-1 block w-full text-sm"
-                    autofocus autocomplete="new-password" autocomplete="off" />
+                <x-text-input disabled wire:model="form.password" id="password" type="password"
+                    class="mt-1 block w-full text-sm bg-gray-100 border" autofocus autocomplete="new-password"
+                    autocomplete="off" />
                 <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.password')" />
             </div>
             <div>
                 <x-input-label class="text-xs" for="form.roles" :value="__('Role')" />
                 <div class="flex items-start gap-2 w-full mt-1">
                     @foreach($roles as $role)
-                    <x-radio-label name="radio-role" id="{{$role->id}}" wire:model="form.roles" value="{{$role->id}}">
+                    <x-radio-label name="radio-role" type="radio" id="{{$role->id}}" wire:model="form.roles"
+                        value="{{$role->id}}">
                         {{$role->name}}
                     </x-radio-label>
                     @endforeach
                 </div>
                 <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.roles')" />
+            </div>
+            <div>
+                <x-input-label class="text-xs" for="form.status" :value="__('Permissions')" />
+                <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.permissions')" />
+                <div class="grid grid-cols-3 gap-2">
+                    @foreach ($permissions as $modul => $perms)
+                    <div class="w-full p-2 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <p class="font-medium text-sm">{{ ucfirst($modul) }}</p>
+                        @foreach ($perms as $perm)
+                        <label class="block">
+                            <input class="text-xs text-blue-600" type="radio" wire:model="form.permissions.{{$modul}}"
+                                value="{{ $perm->name }}">
+                            <span class="text-sm text-gray-500">{{ ucfirst(str_replace("$modul.", '', $perm->name))
+                                }}</span>
+                        </label>
+                        @endforeach
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
         <div class="flex items-center justify-end mt-4 p-4">
@@ -49,7 +70,7 @@
                 {{ __('Batal') }}
             </x-primary-button>
             <x-primary-button wire:loading.attr="disable" class="ms-4">
-                {{ __('Simpan') }}
+                {{ __('Update') }}
             </x-primary-button>
         </div>
     </form>
