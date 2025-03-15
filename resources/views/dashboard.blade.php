@@ -6,6 +6,12 @@
                     {{ __("You're logged in ges!") }}
 
                 </div>
+                <h3 class="font-bold mt-4">User Permissions</h3>
+                <ul>
+                    @foreach (Auth::user()->getPermissionNames() as $permission)
+                    <li>{{ $permission }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     </div>
