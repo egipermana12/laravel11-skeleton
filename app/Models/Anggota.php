@@ -40,6 +40,6 @@ class Anggota extends Model
     }
 
     public function setNikMasking($value){
-        return substr($value, 0, 6) . '****' . substr($value, -6);
+        return  '****' . substr($value, -8);
     }
 }

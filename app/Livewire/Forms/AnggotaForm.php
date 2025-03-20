@@ -81,8 +81,6 @@ class AnggotaForm extends Form
                 'image',
                 'mimes:jpeg,png,jpg',
                 'max:1048',
-                'string',
-                'max:255',
             ],
         ];
     }
@@ -113,9 +111,7 @@ class AnggotaForm extends Form
         $anggota->tgl_gabung = $this->tgl_gabung;
         $anggota->status = $this->status;
         if($this->path_image){
-           $imageName = time().'.'.$this->path_image->extension();
-           $this->path_image->storeAs('private/images/anggota', $imageName);
-           $anggota->path_image = $imageName;
+           $anggota->path_image = $this->path_image->store('images/anggota', 'private');
         }
         $anggota->save();
         return $anggota;

@@ -17,9 +17,14 @@ class rolepermissionTest extends TestCase
     {
         $admin = User::firstOrCreate(
             ['email' => 'admin@admin.com'],
-            ['password' => Hash::make('password')]
+            [
+                'name' => 'admin test',
+                'password' => Hash::make('password'),
+            ]
         );
+
         $admin->assignRole('admin');
+        $admin->givePermissionTo('anggota.write');
 
         $response = $this->actingAs($admin)->get('/anggota');
         $response->assertStatus(200);
@@ -28,9 +33,13 @@ class rolepermissionTest extends TestCase
     public function test_operator_cannot_access_anggota(): void
     {
         $operator = User::firstOrCreate(
-            ['email' => 'user@user.com'],
-            ['password' => Hash::make('password')]
+            ['email' => 'operator@tes.com'],
+            [
+                'name' => 'admin test',
+                'password' => Hash::make('password'),
+            ]
         );
+
         $operator->assignRole('operator');
 
         $response = $this->actingAs($operator)->get('/anggota');
