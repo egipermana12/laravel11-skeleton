@@ -7,6 +7,7 @@ use Livewire\Attributes\Locked;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class AnggotaForm extends Form
 {
@@ -115,6 +116,14 @@ class AnggotaForm extends Form
         }
         $anggota->save();
         return $anggota;
+    }
+
+    public function deletImage(Anggota $anggota){
+        if($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)){
+            Storage::disk('private')->delete($anggota->path_image);
+        }
+        $anggota->path_image = null;
+        $anggota->save();
     }
 
 }

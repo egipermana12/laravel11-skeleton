@@ -25,19 +25,27 @@ class MenuSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'menu_title' => 'Master Data',
+                'menu_title' => 'Anggota',
                 'class' => 'fa-solid fa-chart-pie fa-xl',
                 'parent_id' => 0,
                 'sort_order' => 2,
-                'slug' => '#'
+                'slug' => 'anggota'
             ],
             [
                 'id' => 3,
-                'menu_title' => 'Anggota',
+                'menu_title' => 'Administrasi',
                 'class' => 'fa-solid fa-chart-pie fa-xl',
-                'parent_id' => 2,
+                'parent_id' => 0,
+                'sort_order' => 3,
+                'slug' => '#'
+            ],
+            [
+                'id' => 4,
+                'menu_title' => 'Users',
+                'class' => 'fa-solid fa-chart-pie fa-xl',
+                'parent_id' => 3,
                 'sort_order' => 1,
-                'slug' => 'anggota'
+                'slug' => 'administrasi.users'
             ],
         ];
         DB::table('menus')->insert($data);

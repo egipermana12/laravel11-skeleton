@@ -7,9 +7,11 @@ use App\Livewire\Forms\UserFormAction;
 use Livewire\Component;
 use App\Models\User;
 use App\Traits\WithSorting;
+use Livewire\Attributes\Lazy;
 use Spatie\Permission\Models\Role;
 use Livewire\WithPagination;
 
+#[Lazy()]
 class Users extends Component
 {
     public UserFormAction $form;

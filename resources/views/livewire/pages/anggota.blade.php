@@ -27,4 +27,5 @@
         </div>
     </div>
     <livewire:pages.anggota.anggota-add />
+    <livewire:pages.anggota.anggota-edit />
 </div>

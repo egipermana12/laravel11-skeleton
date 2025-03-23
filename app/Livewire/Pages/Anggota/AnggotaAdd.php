@@ -44,6 +44,7 @@ class AnggotaAdd extends Component
             $this->dispatch('anggota-add-drawer-close');
             $this->dispatch('notify', type: 'fails', message: 'Gagal menambahkan data');
         }
+        $this->dispatch('anggotaChanged')->to(AnggotaTable::class);
     }
 
     public function render()

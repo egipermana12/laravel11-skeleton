@@ -1,9 +1,9 @@
-<x-drawer maxWidth="xl" name="add-anggota" title="add-anggota" wire:model.live="addDrawerOpen">
-    <form wire:submit.prevent="store" class="py-4">
+<x-drawer maxWidth="xl" name="edit-anggota" title="edit-anggota" wire:model.live="editDrawerOpen">
+    <form wire:submit.prevent="update" class="py-4">
         @csrf
         <div class="p-4 flex items-center justify-between border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">Tambah Anggota</h2>
-            <button type="button" wire:click="closeAddDrawer"
+            <h2 class="text-lg font-semibold text-gray-900">Update Anggota</h2>
+            <button type="button" wire:click="closeEditDrawer"
                 class="text-gray-400 bg-gray-100 hover:bg-gray-200 hover:text-gray=900 rounded-md text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 14 14">
@@ -106,16 +106,25 @@
             </div>
             <div>
                 <x-input-label class="text-xs mb-1" for="form.path_image" :value="__('Image')" />
-                <div class="p-2 border-2 border-gray-300 border-dashed bg-gray-100 rounded-sm">
-                    <input wire:model="form.path_image" id="form.path_image" type="file"
-                        class="relative mt-1 pb-4 block w-full text-xs file:absolute file:right-0 file:bg-gray-800 file:text-white file:rounded-md file:hover:bg-gray-900 cursor-pointer file:border-0 file:px-2 file:py-1 file:text-xs file:font-medium file:hover:text-gray-300"
-                        autocomplete="form.path_image" />
-                    <div class="text-xs text-gray-500">
-                        @if($form->path_image)
-                        <img src="{{ $form->path_image->temporaryUrl() }}" alt="Image" class="w-full">
-                        @endif
+                <div>
+                    @if($form->path_image != null)
+                    <div class="relative">
+                        <button wire:click="deleteImage('{{ $form->id }}')"
+                            class="absolute top-0 right-0 bg-red-400 text-white rounded-full w-8 h-8 text-center shadow-md hover:bg-red-600 hover:transform hover:scale-150">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <img src="{{ url('/image/' . str_replace('images/anggota/', '', $form->path_image)) }}"
+                            alt="Image" class="w-full">
                     </div>
+                    @else
+                    <div class="p-2 border-2 border-gray-300 border-dashed bg-gray-100 rounded-sm">
+                        <input wire:model="form.path_image" id="form.path_image" type="file"
+                            class="relative mt-1 pb-4 block w-full text-xs file:absolute file:right-0 file:bg-gray-800 file:text-white file:rounded-md file:hover:bg-gray-900 cursor-pointer file:border-0 file:px-2 file:py-1 file:text-xs file:font-medium file:hover:text-gray-300"
+                            autocomplete="form.path_image" />
+                    </div>
+                    @endif
                 </div>
+
                 <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.path_image')" />
             </div>
         </div>
@@ -125,12 +134,12 @@
             @endif
         </div>
         <div class="flex items-center justify-end mt-4 p-4">
-            <x-primary-button type="button" wire:click="closeAddDrawer"
+            <x-primary-button type="button" wire:click="closeEditDrawer"
                 class="ms-4 bg-red-500 text-white hover:bg-red-700">
                 {{ __('Batal') }}
             </x-primary-button>
             <x-primary-button wire:loading.attr="disable" class="ms-4">
-                {{ __('Simpan') }}
+                {{ __('Update') }}
             </x-primary-button>
         </div>
     </form>

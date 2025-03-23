@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('t_anggota', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
+            $table->string('nik_masking')->nullable();
             $table->string('nama');
             $table->date('tgl_lahir');
             $table->enum('jenis_kelamin', ['L', 'P']);
@@ -22,7 +23,10 @@ return new class extends Migration
             $table->date('tgl_gabung');
             $table->enum('status', ['aktif', 'tidak aktif']);
             $table->string('path_image')->nullable();
+            $table->index('status');
+            $table->index('nik_masking');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -38,7 +38,7 @@
                             class="bg-gray-900 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-gray-700">
                             <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Add User
                         </button>
-                        <button
+                        <button wire:click="deleteUsers"
                             class="bg-red-700 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-red-900"
                             :class="{{count($checked) > 0 ? "'block'" : "'hidden'" }}">
                             Delete User

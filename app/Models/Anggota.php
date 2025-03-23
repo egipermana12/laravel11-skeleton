@@ -29,14 +29,17 @@ class Anggota extends Model
      * Set the nik attribute. for encrypt nik
      */
     public function setNikAttribute($value){
-        $this->attributes['nik'] = Crypt::encryptString($value);
+        // $this->attributes['nik'] = Crypt::encryptString($value);
+        // $this->attributes['nik_hash'] = hash('sha256', $value); // Simpan hash untuk validasi unik, gunakan jika suatu saat butuh untuk di ecrypt
+        $this->attributes['nik'] = $value;
         $this->attributes['nik_masking'] = $this->setNikMasking($value);
     }
 
     // Akses untuk dekripsi NIK
     public function getNikAttribute($value)
     {
-        return $value ? Crypt::decryptString($value) : null;
+        // return $value ? Crypt::decryptString($value) : null;
+        return $value;
     }
 
     public function setNikMasking($value){
