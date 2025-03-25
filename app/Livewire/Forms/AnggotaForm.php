@@ -29,6 +29,7 @@ class AnggotaForm extends Form
     public string $tgl_gabung = '';
     public string $status = 'aktif';
     public $path_image;
+    public $path_newImage;
 
 
     public function rules(){
@@ -83,10 +84,17 @@ class AnggotaForm extends Form
                 'mimes:jpeg,png,jpg',
                 'max:1048',
             ],
+            'path_newImage' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg',
+                'max:1048',
+            ],
         ];
     }
 
     public function setAnggota(Anggota $anggota){
+        $this->anggota = $anggota;
         $this->id = $anggota->id;
         $this->nik = $anggota->nik;
         $this->nama = $anggota->nama;
@@ -118,12 +126,34 @@ class AnggotaForm extends Form
         return $anggota;
     }
 
+    public function update(){
+        $this->validate();
+        $this->anggota->nik = $this->nik;
+        $this->anggota->nama = $this->nama;
+        $this->anggota->tgl_lahir = $this->tgl_lahir;
+        $this->anggota->jenis_kelamin = $this->jenis_kelamin;
+        $this->anggota->alamat = $this->alamat;
+        $this->anggota->no_telp = $this->no_telp;
+        $this->anggota->tgl_gabung = $this->tgl_gabung;
+        $this->anggota->status = $this->status;
+        if($this->path_newImage){
+           $this->anggota->path_image = $this->path_newImage->store('images/anggota', 'private');
+        }
+        $this->anggota->save();
+        return $this->anggota;
+    }
+
     public function deletImage(Anggota $anggota){
         if($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)){
             Storage::disk('private')->delete($anggota->path_image);
         }
         $anggota->path_image = null;
         $anggota->save();
+        return $anggota;
+    }
+
+    public function delete(Anggota $anggota){
+        return $anggota->delete();
     }
 
 }

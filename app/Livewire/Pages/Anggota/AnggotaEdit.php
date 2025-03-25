@@ -22,7 +22,6 @@ class AnggotaEdit extends Component
 
     public function mount(){
         $this->form->tgl_gabung = Carbon::now()->format('Y-m-d');
-        $this->form->path_image = null;
     }
 
     #[On('anggota-edit-drawer')]
@@ -43,7 +42,17 @@ class AnggotaEdit extends Component
         $this->form->path_image = null;
     }
 
-    public function update(){}
+    public function update(){
+        $update = $this->form->update();
+        if($update){
+            $this->dispatch('anggota-edit-drawer-close');
+            $this->dispatch('notify', type:'success', message: 'Berhasil update data');
+        }else{
+            $this->dispatch('anggota-edit-drawer-close');
+            $this->dispatch('notify', type: 'fails', message: 'Gagal update data');
+        }
+        $this->dispatch('anggotaChanged')->to(AnggotaTable::class);
+    }
 
     public function render()
     {

@@ -109,7 +109,7 @@
                 <div>
                     @if($form->path_image != null)
                     <div class="relative">
-                        <button wire:click="deleteImage('{{ $form->id }}')"
+                        <button type="button" wire:click="deleteImage('{{ $form->id }}')"
                             class="absolute top-0 right-0 bg-red-400 text-white rounded-full w-8 h-8 text-center shadow-md hover:bg-red-600 hover:transform hover:scale-150">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
@@ -118,9 +118,14 @@
                     </div>
                     @else
                     <div class="p-2 border-2 border-gray-300 border-dashed bg-gray-100 rounded-sm">
-                        <input wire:model="form.path_image" id="form.path_image" type="file"
+                        <input wire:model="form.path_newImage" id="form.path_newImage" type="file"
                             class="relative mt-1 pb-4 block w-full text-xs file:absolute file:right-0 file:bg-gray-800 file:text-white file:rounded-md file:hover:bg-gray-900 cursor-pointer file:border-0 file:px-2 file:py-1 file:text-xs file:font-medium file:hover:text-gray-300"
-                            autocomplete="form.path_image" />
+                            autocomplete="form.path_newImage" />
+                        <div class="text-xs text-gray-500">
+                            @if($form->path_newImage)
+                            <img src="{{ $form->path_newImage->temporaryUrl() }}" alt="Image" class="w-full">
+                            @endif
+                        </div>
                     </div>
                     @endif
                 </div>

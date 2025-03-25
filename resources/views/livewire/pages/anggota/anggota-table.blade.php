@@ -12,11 +12,30 @@
     </div>
     <div class="text-gray-900 dark:text-gray-100">
         <div class="my-2 flex items-center justify-between">
-            <x-text-input type="text" id="cariUser"
-                class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                placeholder="cari nama atau email" autocomplete="off" />
+            <div class="flex items-center justify-normal gap-x-2">
+                <x-text-input wire:model.live="form.nik" type="text" id="form.nik"
+                    class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    placeholder="cari nik anggota" autocomplete="off" />
+                <x-text-input wire:model.live="form.nama" type="text" id="form.nama"
+                    class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    placeholder="cari nama anggota" autocomplete="off" />
+                <select wire:model.change="form.status"
+                    class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg">
+                    <option value="" selected>Semua Status</option>
+                    <option value="aktif">Aktif</option>
+                    <option value="tidak akfit">Tidak Aktif</option>
+                </select>
+                <select wire:model.change="form.jenis_kelamin"
+                    class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg">
+                    <option value="" selected>Semua Gender</option>
+                    <option value="L">Pria</option>
+                    <option value="P">Wanita</option>
+                </select>
+            </div>
+
             <div class="flex items-center justify-between gap-x-2">
-                <select class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg">
+                <select wire:model.live="pageStart"
+                    class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -63,7 +82,7 @@
                     <td class="px-2 py-4">{{$anggota->nik}}</td>
                     <td class="px-2 py-4">{{ $anggota->nama }}</td>
                     <td class="px-2 py-4">{{ $anggota->alamat }}</td>
-                    <td class="px-2 py-4"> {{$anggota->jenis_kelamin}} </td>
+                    <td class="px-2 py-4">{{ $anggota->jenis_kelamin == 'L' ? 'Pria' : 'Wanita' }}</td>
                     <td class="px-2 py-4">
                         @if($anggota->status == 'aktif')
                         <span
@@ -86,7 +105,9 @@
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     Edit
                                 </button>
-                                <button class="py-1 text-gray-600 text-sx w-full flex gap-x-3 hover:text-red-500">
+                                <button
+                                    wire:click="$dispatch('anggota-delete', {id: {{$anggota->id}}, nama: '{{$anggota->nama}}' })"
+                                    class="py-1 text-gray-600 text-sx w-full flex gap-x-3 hover:text-red-500">
                                     <i class="fa-solid fa-trash"></i>
                                     Delete
                                 </button>

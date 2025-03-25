@@ -28,4 +28,5 @@
     </div>
     <livewire:pages.anggota.anggota-add />
     <livewire:pages.anggota.anggota-edit />
+    <livewire:pages.anggota.anggota-delete />
 </div>

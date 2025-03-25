@@ -29,10 +29,26 @@ class AnggotaTable extends Component
 
     private $anggotas = null;
 
+    public function mount()
+    {
+        $this->form->status = '';
+        $this->form->jenis_kelamin = '';
+    }
+
     public function fetchAnggotas()
     {
         if ($this->anggotas === null) {
-            $query = Anggota::select('id', 'nik', 'nama','status', 'jenis_kelamin', 'alamat', 'no_telp');
+            $query = Anggota::select('id', 'nik', 'nama','status', 'jenis_kelamin', 'alamat', 'no_telp')
+                    ->where('nik', 'like', '%'.$this->form->nik.'%')
+                    ->where('nama', 'like', '%'.$this->form->nama.'%')
+                    ;
+                    if ($this->form->status !== '') {
+                        $query->where('status', '=', $this->form->status);
+                    }
+                    
+                    if ($this->form->jenis_kelamin !== '') {
+                        $query->where('jenis_kelamin', '=', $this->form->jenis_kelamin);
+                    }
             $this->anggotas = $query->orderBy($this->sortBy, $this->sortDirection)->paginate($this->pageStart);
         }
         return $this->anggotas;
