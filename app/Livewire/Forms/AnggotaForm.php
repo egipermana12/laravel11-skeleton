@@ -32,7 +32,8 @@ class AnggotaForm extends Form
     public $path_newImage;
 
 
-    public function rules(){
+    public function rules()
+    {
         return [
             'nik' => [
                 'required',
@@ -47,9 +48,9 @@ class AnggotaForm extends Form
                 'max:50',
             ],
             'tgl_lahir' => [
-               'required',
-               'string',
-               'max:10',
+                'required',
+                'string',
+                'max:10',
             ],
             'jenis_kelamin' => [
                 'required',
@@ -93,7 +94,8 @@ class AnggotaForm extends Form
         ];
     }
 
-    public function setAnggota(Anggota $anggota){
+    public function setAnggota(Anggota $anggota)
+    {
         $this->anggota = $anggota;
         $this->id = $anggota->id;
         $this->nik = $anggota->nik;
@@ -107,7 +109,8 @@ class AnggotaForm extends Form
         $this->path_image = $anggota->path_image;
     }
 
-    public function store(){
+    public function store()
+    {
         $this->validate();
 
         $anggota = new Anggota();
@@ -119,14 +122,15 @@ class AnggotaForm extends Form
         $anggota->no_telp = $this->no_telp;
         $anggota->tgl_gabung = $this->tgl_gabung;
         $anggota->status = $this->status;
-        if($this->path_image){
-           $anggota->path_image = $this->path_image->store('images/anggota', 'private');
+        if ($this->path_image) {
+            $anggota->path_image = $this->path_image->store('images/anggota', 'private');
         }
         $anggota->save();
         return $anggota;
     }
 
-    public function update(){
+    public function update()
+    {
         $this->validate();
         $this->anggota->nik = $this->nik;
         $this->anggota->nama = $this->nama;
@@ -136,15 +140,16 @@ class AnggotaForm extends Form
         $this->anggota->no_telp = $this->no_telp;
         $this->anggota->tgl_gabung = $this->tgl_gabung;
         $this->anggota->status = $this->status;
-        if($this->path_newImage){
-           $this->anggota->path_image = $this->path_newImage->store('images/anggota', 'private');
+        if ($this->path_newImage) {
+            $this->anggota->path_image = $this->path_newImage->store('images/anggota', 'private');
         }
         $this->anggota->save();
         return $this->anggota;
     }
 
-    public function deletImage(Anggota $anggota){
-        if($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)){
+    public function deletImage(Anggota $anggota)
+    {
+        if ($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)) {
             Storage::disk('private')->delete($anggota->path_image);
         }
         $anggota->path_image = null;
@@ -152,8 +157,11 @@ class AnggotaForm extends Form
         return $anggota;
     }
 
-    public function delete(Anggota $anggota){
+    public function delete(Anggota $anggota)
+    {
+        if ($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)) {
+            Storage::disk('private')->delete($anggota->path_image);
+        }
         return $anggota->delete();
     }
-
 }

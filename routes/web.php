@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Pages\Akun;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Pages\Anggota;
@@ -24,6 +25,10 @@ Route::prefix('administrasi')->group(function () {
     Route::get('users', Users::class)->name('administrasi.users');
 })->middleware(['auth', 'verified']);
 
+Route::prefix('master')->group(function () {
+    Route::get('akun', Akun::class)->name('master.akun');
+})->middleware(['auth', 'verified']);
+
 Route::get('/image/{filename}', function ($filename) {
     $path = Storage::disk('private')->path("images/anggota/{$filename}");
 
@@ -34,4 +39,4 @@ Route::get('/image/{filename}', function ($filename) {
     return response()->file($path);
 })->middleware(['auth', 'verified']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
