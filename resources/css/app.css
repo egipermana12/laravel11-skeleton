@@ -6,12 +6,12 @@
 
 @layer components {
     .sidebar-href {
-        @apply w-full grid grid-flow-col auto-cols-max items-center gap-2 px-3 py-3 rounded text-white hover:bg-gray-600 hover:text-gray-100 text-base font-semibold;
+        @apply w-full grid grid-flow-col auto-cols-max items-center gap-2 px-3 py-3 rounded text-white hover:bg-gray-600 hover:text-gray-100 text-sm font-semibold;
     }
     .sidebar-button-dropdown {
-        @apply w-full grid grid-cols-[20px_max-content_1fr] items-center gap-2 px-3 py-3 rounded text-white  text-base font-semibold;
+        @apply w-full grid grid-cols-[20px_max-content_1fr] items-center gap-2 px-3 py-3 rounded text-white  text-sm font-semibold;
     }
     .sidebar-button-dropdown-href {
-        @apply w-full flex items-center text-base font-semibold text-white pb-2;
+        @apply w-full flex items-center  text-sm text-white pb-2;
     }
 }

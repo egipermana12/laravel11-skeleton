@@ -81,7 +81,7 @@
                             value="{{$akun->akun_id}}"
                             class="w-4 h-4 text-center text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2" />
                     </td>
-                    <td class="px-2 py-4 {{$class}}">{{ $akun->kd_akun1 . $akun->kd_akun2 . $akun->kd_akun3 }}</td>
+                    <td class="px-2 py-4 {{$class}}">{{ $akun->kd_akun1 . $akun->kd_akun3 }}</td>
                     <td class="px-2 py-4 {{$class}}">
                         {{ $akun->nama_akun }}
                     </td>

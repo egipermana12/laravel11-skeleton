@@ -27,6 +27,8 @@ class AnggotaTable extends Component
     public $sortDirection = 'asc';
     public $pageStart = 10;
 
+    public $showButton = false;
+
     private $anggotas = null;
 
     public function mount()
@@ -35,20 +37,25 @@ class AnggotaTable extends Component
         $this->form->jenis_kelamin = '';
     }
 
+    /**
+     * bagian untuk lintas data anggota ke table lain
+     * * */
+    public function AmbilAnggota() {}
+
+
     public function fetchAnggotas()
     {
         if ($this->anggotas === null) {
-            $query = Anggota::select('id', 'nik', 'nama','status', 'jenis_kelamin', 'alamat', 'no_telp')
-                    ->where('nik', 'like', '%'.$this->form->nik.'%')
-                    ->where('nama', 'like', '%'.$this->form->nama.'%')
-                    ;
-                    if ($this->form->status !== '') {
-                        $query->where('status', '=', $this->form->status);
-                    }
-                    
-                    if ($this->form->jenis_kelamin !== '') {
-                        $query->where('jenis_kelamin', '=', $this->form->jenis_kelamin);
-                    }
+            $query = Anggota::select('id', 'nik', 'nama', 'status', 'jenis_kelamin', 'alamat', 'no_telp')
+                ->where('nik', 'like', '%' . $this->form->nik . '%')
+                ->where('nama', 'like', '%' . $this->form->nama . '%');
+            if ($this->form->status !== '') {
+                $query->where('status', '=', $this->form->status);
+            }
+
+            if ($this->form->jenis_kelamin !== '') {
+                $query->where('jenis_kelamin', '=', $this->form->jenis_kelamin);
+            }
             $this->anggotas = $query->orderBy($this->sortBy, $this->sortDirection)->paginate($this->pageStart);
         }
         return $this->anggotas;
@@ -57,7 +64,7 @@ class AnggotaTable extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->checked = $this->fetchAnggotas()->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->fetchAnggotas()->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }

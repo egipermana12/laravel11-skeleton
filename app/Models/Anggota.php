@@ -26,9 +26,20 @@ class Anggota extends Model
     ];
 
     /**
+     * RELASY MANY TO MANY
+     * antara anggota dan simpanan
+     * * */
+
+    public function simpanan()
+    {
+        return $this->hasMany(Simpanan::class, 'id_anggota');
+    }
+
+    /**
      * Set the nik attribute. for encrypt nik
      */
-    public function setNikAttribute($value){
+    public function setNikAttribute($value)
+    {
         // $this->attributes['nik'] = Crypt::encryptString($value);
         // $this->attributes['nik_hash'] = hash('sha256', $value); // Simpan hash untuk validasi unik, gunakan jika suatu saat butuh untuk di ecrypt
         $this->attributes['nik'] = $value;
@@ -42,7 +53,8 @@ class Anggota extends Model
         return $value;
     }
 
-    public function setNikMasking($value){
+    public function setNikMasking($value)
+    {
         return  '****' . substr($value, -8);
     }
 }

@@ -4,6 +4,8 @@ use App\Livewire\Pages\Akun;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Pages\Anggota;
+use App\Livewire\Pages\Simpanan;
+use App\Livewire\Pages\Simpanan\SimpananAdd;
 use App\Livewire\Pages\Users;
 
 Route::view('/', 'welcome');
@@ -19,6 +21,12 @@ Route::view('profile', 'profile')
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('anggota', Anggota::class)->name('anggota')->middleware(['permission:anggota.read|anggota.write']);
 });
+
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('simpanan', Simpanan::class)->name('simpanan')->middleware(['permission:simpanan.read|simpanan.write']);
+    Route::get('simpanan/add', SimpananAdd::class)->name('simpanan.add')->middleware(['permission:simpanan.write']);
+});
+
 
 
 Route::prefix('administrasi')->group(function () {

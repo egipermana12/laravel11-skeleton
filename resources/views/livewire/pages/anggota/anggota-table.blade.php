@@ -11,6 +11,16 @@
         </div>
     </div>
     <div class="text-gray-900 dark:text-gray-100">
+        {{-- untuk ambil data anggota di component lain --}}
+        @if($showButton)
+        <div class="text-right">
+            <x-primary-button type="button" wire:click="AmbilAnggota" wire:loading.attr="disable"
+                class="ms-4 bg-black-500 text-white hover:bg-gray-700">
+                {{ __('PIlih') }}
+            </x-primary-button>
+        </div>
+        @endif
+        {{-- --}}
         <div class="my-2 flex items-center justify-between">
             <div class="flex items-center justify-normal gap-x-2">
                 <x-text-input wire:model.live="form.nik" type="text" id="form.nik"
@@ -43,6 +53,7 @@
                 </select>
             </div>
         </div>
+
         {{-- table --}}
         <table class="table-auto w-full text-left text-sm rtl:text-right text-gray-500">
             <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
@@ -92,6 +103,16 @@
                             Aktif</span>
                         @endif
                     </td>
+                    @if($showButton)
+                    <td class="px-2 py-4">
+                        <x-primary-button
+                            wire:click="$dispatch('pilihanggota-simpanan', {anggota_id: {{$anggota->id}}, nik: {{$anggota->nik}},nama: '{{$anggota->nama}}' })"
+                            type="button" wire:loading.attr="disable"
+                            class="ms-4 bg-black-500 text-white hover:bg-gray-700">
+                            {{ __('PIlih') }}
+                        </x-primary-button>
+                    </td>
+                    @else
                     <td class="relative px-2 py-4 text-center" x-data="{openAksi : false}">
                         <span @click="openAksi = !openAksi"
                             class="cursor-pointer bg-gray-50 border border-gray-200 p-2 rounded-md text-center hover:bg-gray-100 hover:border-gray-300">
@@ -114,6 +135,7 @@
                             </div>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
