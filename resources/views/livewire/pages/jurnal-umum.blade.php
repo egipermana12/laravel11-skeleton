@@ -14,19 +14,16 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <div class="flex items-center justify-between">
-                    <h5 class="font-semibold text-gray-800">Simpanan Anggota</h5>
+                    <h5 class="font-semibold text-gray-800">Jurnal Umum</h5>
                     <a href="{{url('transaksianggota/simpanan/add')}}" wire:navigate>
                         <button
                             class="bg-gray-900 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-gray-700">
-                            <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Add Simpanan
+                            <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Cetak Data
                         </button>
                     </a>
                 </div>
-
-                <livewire:pages.simpanan.simpanantable />
-
+                <livewire:pages.jurnalumum.jurnal-umum-table />
             </div>
         </div>
     </div>
-
 </div>

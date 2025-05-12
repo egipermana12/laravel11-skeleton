@@ -55,7 +55,8 @@
         </div>
 
         {{-- table --}}
-        <table class="table-auto w-full text-left text-sm rtl:text-right text-gray-500">
+        <table
+            class="table-auto w-full [&>tbody>*:nth-child(odd)]:bg-gray-100 [&>tbody>*:nth-child(even)]:bg-gray-50 text-left text-sm rtl:text-right text-gray-500">
             <thead class="text-xs font-semibold text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
                 <tr>
                     <th class="px-2 py-4 text-center" width="4%">No</th>

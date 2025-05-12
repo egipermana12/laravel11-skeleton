@@ -11,6 +11,7 @@ use App\Livewire\Forms\SimpananForm;
 use App\Models\Simpanan;
 
 #[Lazy()]
+#[On('simpananChanged')]
 class Simpanantable extends Component
 {
     use WithPagination;

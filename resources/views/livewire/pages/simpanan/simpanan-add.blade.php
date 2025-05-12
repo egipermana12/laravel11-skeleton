@@ -81,14 +81,14 @@
                         </div>
                         <div class="mb-4">
                             <x-input-label class="text-xs" for="form.keterangan" :value="__('Keterangan')" />
-                            <textarea id="message" rows="4"
+                            <textarea id="message" rows="4" wire:model="form.keterangan"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Write your thoughts here..."></textarea>
 
                         </div>
                     </div>
                     {{-- untuk hidden form --}}
-                    <x-text-input disabled wire:model="form.id_anggota" id="form.id_anggota" type="hidden"
+                    <x-text-input disabled wire:model="form.id_anggota" id="form.id_anggota" type="text"
                         class="bg-gray-100 mt-1 block w-full text-sm {{ $errors->has('form.id_anggota') ? 'error-input border-red-500' : '' }} "
                         autocomplete="form.id_anggota" />
                     <div class="flex items-center justify-end mt-4 p-4">

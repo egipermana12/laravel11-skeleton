@@ -70,7 +70,9 @@
                 </select>
             </div>
         </div>
-        {{-- table --}} <table class="table-auto w-full text-xs rtl:text-right text-gray-500">
+        {{-- table --}}
+        <table
+            class="table-auto w-full [&>tbody>*:nth-child(odd)]:bg-gray-100 [&>tbody>*:nth-child(even)]:bg-gray-50 text-xs rtl:text-right text-gray-500">
             <thead class="text-xs font-bold text-gray-700  uppercase border-b border-gray-200">
                 <tr class="w-full">
                     <th class="px-2 py-4 text-center " width="4%">

@@ -9,9 +9,11 @@ use Livewire\Component;
 use App\Livewire\Forms\SimpananForm;
 use Carbon\Carbon;
 use App\Models\Akun;
+use App\Traits\MappingAkunSimpanan;
 
 class SimpananAdd extends Component
 {
+    use MappingAkunSimpanan;
 
     public $modalCariUser = false;
 
@@ -43,24 +45,23 @@ class SimpananAdd extends Component
     /**
      * untuk update select combo
      * * */
-    protected $akunJenisMap = [
-        '8.2.0.01' => 'pokok',
-        '9.2.0.02' => 'wajib',
-        '10.2.0.03' => 'sukarela',
-    ];
+
 
     public function updatedFormKdAkunKredit($value)
     {
-        if (isset($this->akunJenisMap[$value])) {
-            $this->form->jenis_simpanan = $this->akunJenisMap[$value];
-        } else {
-            $this->form->jenis_simpanan = 'pokok';
-        }
+        $this->form->jenis_simpanan = $this->getJenisSimpanan($value) ?? 'pokok';
     }
 
     public function store()
     {
-        $this->form->store();
+        $save = $this->form->store();
+        if ($save) {
+            $this->form->reset();
+            $this->dispatch('notify', type: 'success', message: 'Berhasil menambahkan data');
+            return redirect()->route('simpanan');
+        } else {
+            $this->dispatch('notify', type: 'error', message: 'Gagal menambahkan data');
+        }
     }
 
     public function akunDebet()

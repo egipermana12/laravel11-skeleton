@@ -15,4 +15,9 @@ class Akun extends Model
         'nama_akun',
         'jenis_akun',
     ];
+
+    public function jurnal()
+    {
+        return $this->hasMany(Jurnal::class, 'akun_id');
+    }
 }

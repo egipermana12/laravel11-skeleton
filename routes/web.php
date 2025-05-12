@@ -4,6 +4,7 @@ use App\Livewire\Pages\Akun;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Pages\Anggota;
+use App\Livewire\Pages\JurnalUmum;
 use App\Livewire\Pages\Simpanan;
 use App\Livewire\Pages\Simpanan\SimpananAdd;
 use App\Livewire\Pages\Users;
@@ -22,20 +23,26 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('anggota', Anggota::class)->name('anggota')->middleware(['permission:anggota.read|anggota.write']);
 });
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('simpanan', Simpanan::class)->name('simpanan')->middleware(['permission:simpanan.read|simpanan.write']);
-    Route::get('simpanan/add', SimpananAdd::class)->name('simpanan.add')->middleware(['permission:simpanan.write']);
+Route::middleware(['auth', 'verified'])->prefix('transaksianggota')->group(function () {
+    Route::prefix('simpanan')->group(function () {
+        Route::get('/', Simpanan::class)->name('transaksianggota.simpanan')->middleware(['permission:simpanan.read|simpanan.write']);
+        Route::get('add', SimpananAdd::class)->name('transaksianggota.simpanan.add')->middleware(['permission:simpanan.write']);
+    });
 });
 
+Route::middleware(['auth', 'verified'])->prefix('transaksiakutansi')->group(function () {
+    Route::prefix('jurnalumum')->group(function () {
+        Route::get('/', JurnalUmum::class)->name('transaksiakutansi.jurnalumum')->middleware(['permission:transaksi.read|transaksi.write']);
+    });
+});
 
-
-Route::prefix('administrasi')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('administrasi')->group(function () {
     Route::get('users', Users::class)->name('administrasi.users');
-})->middleware(['auth', 'verified']);
+});
 
-Route::prefix('master')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('master')->group(function () {
     Route::get('akun', Akun::class)->name('master.akun');
-})->middleware(['auth', 'verified']);
+});
 
 Route::get('/image/{filename}', function ($filename) {
     $path = Storage::disk('private')->path("images/anggota/{$filename}");
