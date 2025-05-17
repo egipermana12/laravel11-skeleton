@@ -13,17 +13,22 @@
     <div class="text-gray-900 dark:text-gray-100">
         <div class="my-2 flex items-center justify-between">
             <div class="flex items-center justify-normal gap-x-2">
-                <livewire:components.input-tanggal wire:model.live="startOfMonth" class="mt-1 block w-full text-sm" />
-                <livewire:components.input-tanggal wire:model.live="endOfMonth" class="mt-1 block w-full text-sm" />
+                <livewire:components.input-tanggal wire:model.defer="startOfMonth" class="mt-1 block w-full text-sm" />
+                <livewire:components.input-tanggal wire:model.defer="endOfMonth" class="mt-1 block w-full text-sm" />
+
             </div>
             <div class="flex items-center justify-between gap-x-2">
-                <select wire:model.live="pageStart"
+                <select wire:model.defer="pageStart"
                     class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
+                <button wire:click="tampilkan"
+                    class="bg-gray-900 text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-gray-700">
+                    <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Tampilkan
+                </button>
             </div>
         </div>
     </div>
@@ -52,13 +57,16 @@
             @foreach ($jurnalumums as $group => $items)
             @php
             $isOdd = $loop->iteration % 2 === 1;
+            $perPage = $jurnalumums->perPage();
+            $currentPage = $jurnalumums->currentPage();
+            $startNumber = ($currentPage - 1) * $perPage + 1;
             $rowClass = $isOdd ? 'bg-gray-100' : 'bg-gray-50';
             @endphp
             @foreach ($items as $index => $item)
             <tr class="border border-gray-200 {{$rowClass}}">
                 @if($index === 0)
                 <td rowspan="{{ $items->count() }}" class="px-2 py-4 text-center border border-gray-200">{{
-                    $loop->parent->iteration }}</td>
+                    $startNumber + $group }}</td>
                 <td rowspan="{{ $items->count() }}" class="px-2 py-4 border border-gray-200">{{ $item->tanggal }}</td>
                 <td rowspan="{{ $items->count() }}" class="px-2 py-4 border border-gray-200">{{
                     $item->transaksi->jenis_transaksi }}

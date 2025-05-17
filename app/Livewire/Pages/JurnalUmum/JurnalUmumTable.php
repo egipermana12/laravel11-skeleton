@@ -22,11 +22,28 @@ class JurnalUmumTable extends Component
     public $endOfMonth;
 
     private $jurnalumums = null;
-
     public function mount()
     {
         $this->startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
         $this->endOfMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $this->dispatch('changeTanggalJurnal', $this->startOfMonth, $this->endOfMonth);
+    }
+
+    public function updatedStartOfMonth()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedEndOfMonth()
+    {
+        $this->resetPage();
+    }
+
+    public function tampilkan()
+    {
+        $this->jurnalumums = null;
+        $this->resetPage();
+        $this->dispatch('changeTanggalJurnal', $this->startOfMonth, $this->endOfMonth);
     }
 
     public function fetchJurnalUmum()

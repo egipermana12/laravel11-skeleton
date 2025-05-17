@@ -33,6 +33,8 @@ Route::middleware(['auth', 'verified'])->prefix('transaksianggota')->group(funct
 Route::middleware(['auth', 'verified'])->prefix('transaksiakutansi')->group(function () {
     Route::prefix('jurnalumum')->group(function () {
         Route::get('/', JurnalUmum::class)->name('transaksiakutansi.jurnalumum')->middleware(['permission:transaksi.read|transaksi.write']);
+        Route::get('/exportPDF', [JurnalUmum::class, 'exportPDF'])->name('jurnalumumPDF')->middleware(['permission:transaksi.read|transaksi.write']);
+        Route::get('/exportEXCEL', [JurnalUmum::class, 'exportExcel'])->name('jurnalumumEXCEL')->middleware(['permission:transaksi.read|transaksi.write']);
     });
 });
 
