@@ -21,28 +21,6 @@ class AkunForm extends Form
     public string $jenis_akun = '';
     public string $ket = '';
 
-    public function rules(): array
-    {
-        return [
-            'kd_akun1' => [
-                'required',
-                'string',
-                'max:1',
-                Rule::unique('t_akun', 'kd_akun1')->ignore($this->akun_id),
-            ],
-            'nama_akun' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'jenis_akun' => [
-                'required',
-                'string',
-                Rule::in(['debet', 'kredit']),
-            ],
-        ];
-    }
-
     public function setAkun(Akun $akun): void
     {
         $this->akun = $akun;
@@ -53,5 +31,43 @@ class AkunForm extends Form
         $this->nama_akun = $akun->nama_akun;
         $this->jenis_akun = $akun->jenis_akun;
         $this->ket = $akun->ket;
+    }
+
+    public function storeAkun1()
+    {
+        $this->validate([
+            'kd_akun1' => 'required|string|max:1|unique:t_akun,kd_akun1',
+            'nama_akun' => 'required|string|max:255',
+            'jenis_akun' => 'required|string',
+        ]);
+
+        $akun = new Akun();
+        $akun->kd_akun1 = $this->kd_akun1;
+        $akun->nama_akun = $this->nama_akun;
+        $akun->jenis_akun = $this->jenis_akun;
+        $akun->ket = $this->ket;
+        $akun->save();
+        return $akun;
+    }
+
+    public function storeAkun3()
+    {
+        $this->validate([
+            'kd_akun1' => 'required|string|max:1',
+            'kd_akun3' => ['required', 'string', 'min:2', 'max:2', Rule::unique('t_akun', 'kd_akun3')->where(function ($qurey) {
+                $qurey->where('kd_akun1', $this->kd_akun1);
+            })],
+            'nama_akun' => 'required|string|max:255',
+            'jenis_akun' => 'required|string',
+        ]);
+
+        $akun = new Akun();
+        $akun->kd_akun1 = $this->kd_akun1;
+        $akun->kd_akun3 = $this->kd_akun3;
+        $akun->jenis_akun = $this->jenis_akun;
+        $akun->ket = $this->ket;
+        $akun->nama_akun = $this->nama_akun;
+        $akun->save();
+        return $akun;
     }
 }

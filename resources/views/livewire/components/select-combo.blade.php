@@ -1,4 +1,4 @@
-<div>
+<div class="w-full">
     <select wire:model="selectedValue"
         class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg {{$class}}" @disabled($disable)>
         @unless($disable)

@@ -49,6 +49,25 @@ class Akuntable extends Component
         return $this->akuns;
     }
 
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->checked = $this->fetchAkun()->pluck('akun_id')->map(fn($item) => (string) $item)->toArray();
+        } else {
+            $this->checked = [];
+        }
+    }
+
+    public function updatedChecked()
+    {
+        $this->selectAll = false;
+    }
+
+    public function isChecked($id)
+    {
+        return in_array($id, $this->checked);
+    }
+
     public function selectAkun()
     {
         $query = Akun::select('kd_akun1', 'nama_akun');

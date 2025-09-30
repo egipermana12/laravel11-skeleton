@@ -9,6 +9,7 @@ class Akun extends Model
 {
     use SoftDeletes;
     protected $table = 't_akun';
+    protected $primaryKey  = 'akun_id';
 
     protected $fillable = [
         'kd_akun',
