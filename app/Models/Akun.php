@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Akun extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = 't_akun';
     protected $primaryKey  = 'akun_id';
 
@@ -15,6 +15,7 @@ class Akun extends Model
         'kd_akun',
         'nama_akun',
         'jenis_akun',
+        'ket',
     ];
 
     public function jurnal()

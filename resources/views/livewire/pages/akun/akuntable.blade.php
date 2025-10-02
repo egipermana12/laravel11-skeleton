@@ -95,12 +95,13 @@
                         <div x-show="openAksi" @click.outside="openAksi = false"
                             class="absolute top-10 right-4 bg-white rounded-md z-50 w-36 border border-gray-200 p-2 text-sm shadow-md">
                             <div class="flex items-start flex-col gap-y-2">
-                                <button wire:click="$dispatch('modal-edit-akun', {id: {{$akun->id}} })"
+                                <button wire:click="$dispatch('modal-edit-akun', {id: {{$akun->akun_id}} })"
                                     class="py-1 text-gray-600 text-sx w-full flex gap-x-3 hover:text-blue-500">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     Edit
                                 </button>
-                                <button class="py-1 text-gray-600 text-sx w-full flex gap-x-3 hover:text-red-500">
+                                <button wire:click="$dispatch('akun-delete', {akun_id: {{$akun->akun_id}} })"
+                                    class="py-1 text-gray-600 text-sx w-full flex gap-x-3 hover:text-red-500">
                                     <i class="fa-solid fa-trash"></i>
                                     Delete
                                 </button>

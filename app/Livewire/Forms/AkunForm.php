@@ -30,7 +30,7 @@ class AkunForm extends Form
         $this->kd_akun3 = $akun->kd_akun3;
         $this->nama_akun = $akun->nama_akun;
         $this->jenis_akun = $akun->jenis_akun;
-        $this->ket = $akun->ket;
+        $this->ket = $akun->ket ?? '';
     }
 
     public function storeAkun1()
@@ -69,5 +69,41 @@ class AkunForm extends Form
         $akun->nama_akun = $this->nama_akun;
         $akun->save();
         return $akun;
+    }
+
+    public function updateAkun()
+    {
+        $this->validate([
+            'nama_akun' => 'required|string|max:255',
+            'jenis_akun' => 'required|string',
+            'ket' => 'nullable|string|max:255',
+        ]);
+
+        $akun = Akun::findOrFail($this->akun_id);
+
+        $akun->fill([
+            'nama_akun' => $this->nama_akun,
+            'jenis_akun' => $this->jenis_akun,
+            'ket' => $this->ket,
+        ]);
+
+        $saved = $akun->save();
+
+        if ($saved && $akun->kd_akun3 === '00') {
+            Akun::where('kd_akun1', $this->kd_akun1)->update(['jenis_akun' => $this->jenis_akun]);
+        }
+        return $saved;
+    }
+
+    public function deleteAkun(Akun $akun)
+    {
+        if ($akun->kd_akun3 === '00') {
+            $count = Akun::where('kd_akun1', $akun->kd_akun1)->where('kd_akun3', '!=', '00')->count();
+            if ($count > 0) {
+                return $count;
+            }
+        }
+        $deleted =  $akun->delete();
+        return $deleted ? true : false;
     }
 }

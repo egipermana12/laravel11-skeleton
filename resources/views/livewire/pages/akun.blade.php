@@ -27,6 +27,7 @@
         </div>
     </div>
     <livewire:pages.akun.akunadd />
+    <livewire:pages.akun.akun-delete />
 
     {{-- modal add akun --}}
     <x-modalcustom name="user-cari" wire:model.live="modalAddAkun" maxWidth="md">
@@ -108,15 +109,21 @@
             </button>
         </div>
         <div class="p-4">
-            <form wire:submit.prevent="">
+            <form wire:submit.prevent="updateAkun">
                 @csrf
                 <div>
                     <div class="flex items-center gap-1 w-full">
                         <div class="">
-                            <x-input-label class=" text-xs" for="form.kd_akun1" :value="__('Kode')" />
+                            <x-input-label class=" text-xs" for="form.kd_akun1" :value="__('KD01')" />
                             <x-text-input wire:model="form.kd_akun1" id="form.kd_akun1" type="text" disabled
-                                class="mt-1 block w-16 text-sm {{ $errors->has('form.kd_akun1') ? 'error-input border-red-500' : '' }} "
+                                class="mt-1 bg-gray-100 block w-8 text-sm {{ $errors->has('form.kd_akun1') ? 'error-input border-red-500' : '' }} "
                                 placeholder="Input kode akun" autocomplete="form.kd_akun1" />
+                        </div>
+                        <div>
+                            <x-input-label class=" text-xs" for="form.kd_akun3" :value="__('KD02')" />
+                            <x-text-input wire:model="form.kd_akun3" id="form.kd_akun3" type="text" disabled
+                                class="mt-1 bg-gray-100 block w-16 text-sm {{ $errors->has('form.kd_akun3') ? 'error-input border-red-500' : '' }} "
+                                placeholder="Input kode akun" autocomplete="form.kd_akun3" />
                         </div>
                         <div class="w-full">
                             <x-input-label class=" text-xs" for="form.nama_akun" :value="__('Nama Akun')" />
@@ -131,9 +138,9 @@
                 </div>
                 <div>
                     <x-input-label class="text-xs" for="form.nama" :value="__('Jenis Akun')" />
-                    <select wire:model="form.jenis_akun" id="form.jenis_akun"
+                    <select wire:model="form.jenis_akun" id="form.jenis_akun" {{ $disableJnsAkun ? 'disabled' : '' }}
                         class="bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg w-full {{ $errors->has('form.jenis_akun') ? 'error-input border-red-500' : '' }} ">
-                        <option value="" selected></option>
+                        <option value="" selected>Pilih</option>
                         <option value="debet">Debet</option>
                         <option value="kredit">Kredit</option>
                     </select>
