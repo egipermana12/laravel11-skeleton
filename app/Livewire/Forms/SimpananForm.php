@@ -30,29 +30,7 @@ class SimpananForm extends Form
     public $keterangan;
     public $nama;
     public $nik;
-
-
     public $kd_akun_debet;
-
-
-    public function rules()
-    {
-        return [
-            'id_anggota' => 'required',
-            'nama' => 'required',
-            'nik' => 'required',
-            'kd_akun_debet' => 'required',
-            'kd_akun_kredit' => 'required',
-            'jenis_simpanan' => ['required', Rule::in(['pokok', 'wajib', 'sukarela']), function ($attribute, $value, $fail) {
-                if (!$this->isJenisSimpanan($this->kd_akun_kredit, $value)) {
-                    $fail('Jenis simpanan tidak sesuai dengan akun kredit.');
-                }
-            }],
-            'jumlah' => 'required|numeric|min:1',
-            'tgl_simpanan' => 'required',
-            'keterangan' => 'nullable|string',
-        ];
-    }
 
     public function setSimpanan(Simpanan $simpanan)
     {
@@ -67,7 +45,28 @@ class SimpananForm extends Form
 
     public function store(): bool
     {
-        $this->validate();
+        $this->validate([
+            'id_anggota' => 'required',
+            'nama' => 'required',
+            'nik' => 'required',
+            'kd_akun_debet' => 'required',
+            'kd_akun_kredit' => 'required',
+            'jenis_simpanan' => [
+                'required',
+                Rule::in(['pokok', 'wajib', 'sukarela']),
+                function ($attribute, $value, $fail) {
+                    if (!$this->isJenisSimpanan($this->kd_akun_kredit, $value)) {
+                        $fail('Jenis simpanan tidak sesuai dengan akun kredit.');
+                    }
+                },
+                Rule::unique('t_simpanan', 'jenis_simpanan')->where(function ($query) {
+                    $query->where('id_anggota', $this->id_anggota);
+                }),
+            ],
+            'jumlah' => 'required|numeric|min:1',
+            'tgl_simpanan' => 'required',
+            'keterangan' => 'nullable|string',
+        ]);
 
         DB::beginTransaction();
         try {
@@ -85,23 +84,28 @@ class SimpananForm extends Form
                 'keterangan' => 'Simpanan ' . $this->jenis_simpanan,
             ]);
 
+            $kdAkunDebetExplod = explode('.', $this->kd_akun_debet);
+
             Jurnal::create([
                 'tanggal' => $this->tgl_simpanan,
                 'transaksi_id' => $transaksi->transaksi_id,
-                'akun_id' =>  substr($this->kd_akun_debet, 0, 1),
-                'kd_akun1' => substr($this->kd_akun_debet, 2, 1),
-                'kd_akun2' => substr($this->kd_akun_debet, 4, 1),
-                'kd_akun3' => substr($this->kd_akun_debet, 6, 2),
+                'akun_id' =>  $kdAkunDebetExplod[0],
+                'kd_akun1' => $kdAkunDebetExplod[1],
+                'kd_akun2' => $kdAkunDebetExplod[2],
+                'kd_akun3' => $kdAkunDebetExplod[3],
                 'debet' => $this->jumlah,
                 'kredit' => 0,
             ]);
+
+            $kdAkunKreditExplod = explode('.', $this->kd_akun_kredit);
+
             Jurnal::create([
                 'tanggal' => $this->tgl_simpanan,
                 'transaksi_id' => $transaksi->transaksi_id,
-                'akun_id' =>  substr($this->kd_akun_kredit, 0, 1),
-                'kd_akun1' => substr($this->kd_akun_kredit, 2, 1),
-                'kd_akun2' => substr($this->kd_akun_kredit, 4, 1),
-                'kd_akun3' => substr($this->kd_akun_kredit, 6, 2),
+                'akun_id' => $kdAkunKreditExplod[0],
+                'kd_akun1' => $kdAkunKreditExplod[1],
+                'kd_akun2' => $kdAkunKreditExplod[2],
+                'kd_akun3' => $kdAkunKreditExplod[3],
                 'kredit' => $this->jumlah,
                 'debet' => 0,
             ]);
@@ -113,6 +117,49 @@ class SimpananForm extends Form
             // Log jika ada kesalahan
             Log::error('Gagal menyimpan data simpanan: ' . $e->getMessage());
             Log::channel('simpanan')->error('Gagal menyimpan data simpanan: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function update(): bool
+    {
+        $this->validate([
+            'jumlah' => 'required|numeric|min:1',
+            'tgl_simpanan' => 'required',
+            'keterangan' => 'nullable|string',
+        ]);
+        DB::beginTransaction();
+        try {
+            $this->simpanan->update([
+                'jumlah' => $this->jumlah,
+                'tgl_simpanan' => $this->tgl_simpanan,
+                'keterangan' => $this->keterangan,
+            ]);
+
+            $transaksi = Transaksi::where('refid_transaksi', $this->simpanan->simpanan_id)
+                ->first();
+
+            $kdAkunDebetExplod = explode('.', $this->kd_akun_debet);
+
+            Jurnal::where('transaksi_id', $transaksi->transaksi_id)->where('akun_id', $kdAkunDebetExplod[0])
+                ->update([
+                    'debet' => $this->jumlah,
+                ]);
+
+            $kdAkunKreditExplod = explode('.', $this->kd_akun_kredit);
+
+            Jurnal::where('transaksi_id', $transaksi->transaksi_id)->where('akun_id', $kdAkunKreditExplod[0])
+                ->update([
+                    'kredit' => $this->jumlah,
+                ]);
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log jika ada kesalahan
+            Log::error('Gagal memperbarui data simpanan: ' . $e->getMessage());
+            Log::channel('simpanan')->error('Gagal memperbarui data simpanan: ' . $e->getMessage());
             return false;
         }
     }

@@ -21,22 +21,26 @@ class AnggotaDelete extends Component
     public $openModalDelete = false;
 
     #[On('anggota-delete')]
-    public function openModal($id, $nama){
+    public function openModal($id, $nama)
+    {
         $this->id = $id;
         $this->nama = $nama;
         $this->openModalDelete = true;
     }
 
-    public function delete(){
+    public function delete()
+    {
         $find = Anggota::findorFail($this->id);
-        if($find) {
+        if ($find) {
             $delete = $this->form->delete($find);
-            if ($delete) {
+            if ($delete === true) {
                 $this->dispatch('notify', type: 'success', message: 'Berhasil menghapus data');
+            } else if (is_int($delete) && $delete > 0) {
+                $this->dispatch('notify', type: 'fails', message: 'Anggota masih memiliki simpanan atau pinjaman');
             } else {
                 $this->dispatch('notify', type: 'fails', message: 'Gagal menghapus data');
             }
-        }else{
+        } else {
             $this->dispatch('notify', type: 'fails', message: 'Data tidak ditemukan');
         }
         $this->openModalDelete = false;

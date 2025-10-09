@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_anggota');
             $table->decimal('jumlah', 10, 2);
             $table->date('tgl_pinjaman');
-            $table->enum('jenis_simpanan', ['disetujui', 'ditolak', 'lunas', 'belum_lunas'])->default('ditolak');
+            $table->enum('status', ['disetujui', 'ditolak', 'lunas', 'belum_lunas'])->default('ditolak');
             $table->integer('lama_angsuran');
             $table->string('keterangan')->nullable();
             $table->timestamps();

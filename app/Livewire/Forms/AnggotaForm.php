@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Anggota;
+use App\Models\Simpanan;
+use App\Models\Pinjaman;
 use Livewire\Attributes\Locked;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
@@ -159,6 +161,13 @@ class AnggotaForm extends Form
 
     public function delete(Anggota $anggota)
     {
+        $simpanan = Simpanan::where('id_anggota', $anggota->id)->count();
+        $pinjaman = Pinjaman::where('id_anggota', $anggota->id)->count();
+
+        if ($simpanan > 0 || $pinjaman > 0) {
+            $count = 1;
+            return $count;
+        }
         if ($anggota->path_image && Storage::disk('private')->exists($anggota->path_image)) {
             Storage::disk('private')->delete($anggota->path_image);
         }

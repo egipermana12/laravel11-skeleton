@@ -3,65 +3,60 @@
 namespace App\Livewire\Pages\Simpanan;
 
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Attributes\Locked;
 use App\Livewire\Forms\SimpananForm;
 use Carbon\Carbon;
+use App\Models\Simpanan;
 use App\Models\Akun;
+use App\Models\Anggota;
 use App\Traits\MappingAkunSimpanan;
 
-class SimpananAdd extends Component
+
+class SimpananEdit extends Component
 {
     use MappingAkunSimpanan;
 
-    public $modalCariUser = false;
+    #[Locked]
+    public $simpanan_id;
 
     public SimpananForm $form;
 
-    public function mount()
+    public function mount(Simpanan $id)
     {
-        $this->form->jenis_simpanan = 'pokok';
-        $this->form->jumlah = 0;
-        $this->form->tgl_simpanan = Carbon::now()->format('Y-m-d');
+        $this->form->setSimpanan($id);
         $this->form->kd_akun_debet = '2.1.0.01';
-        $this->form->kd_akun_kredit = '8.2.0.01';
+        if ($this->form->jenis_simpanan == 'pokok') {
+            $this->form->kd_akun_kredit = '8.2.0.01';
+        } elseif ($this->form->jenis_simpanan == 'wajib') {
+            $this->form->kd_akun_kredit = '9.2.0.02';
+        } elseif ($this->form->jenis_simpanan == 'sukarela') {
+            $this->form->kd_akun_kredit = '10.2.0.03';
+        }
+        $anggota = $this->getDataAnggota();
+        if ($anggota) {
+            $this->form->nama = $anggota->nama;
+            $this->form->nik = $anggota->nik;
+        }
     }
 
-    #[On('carimodaluser')]
-    public function openModalCariUser()
+    public function getDataAnggota()
     {
-        $this->modalCariUser = true;
+        $anggota = Anggota::select('nik', 'nama')
+            ->where('id', $this->form->id_anggota)
+            ->first();
+        return $anggota;
     }
 
-    #[On('pilihanggota-simpanan')]
-    public function pilihAnggota($nik, $nama, $anggota_id)
+    public function update()
     {
-        $this->form->nik = $nik;
-        $this->form->nama = $nama;
-        $this->form->id_anggota = $anggota_id;
-        $this->modalCariUser = false;
-    }
-
-    /**
-     * untuk update select combo
-     * * */
-
-
-    public function updatedFormKdAkunKredit($value)
-    {
-        $this->form->jenis_simpanan = $this->getJenisSimpanan($value) ?? 'pokok';
-    }
-
-    public function store()
-    {
-        $save = $this->form->store();
-        if ($save) {
-            $this->form->reset();
-            $this->dispatch('notify', type: 'success', message: 'Berhasil menambahkan data');
-            return redirect()->route('transaksianggota.simpanan');
+        $update = $this->form->update();
+        if ($update) {
+            $this->dispatch('notify', type: 'success', message: 'Berhasil memperbarui data');
+            // return redirect()->route('transaksianggota.simpanan');
         } else {
-            $this->dispatch('notify', type: 'fails', message: 'Gagal menambahkan data');
+            $this->dispatch('notify', type: 'fails', message: 'Gagal memperbarui data');
+            // return redirect()->route('transaksianggota.simpanan');
         }
     }
 
@@ -96,6 +91,6 @@ class SimpananAdd extends Component
     {
         $kd_akundebet = $this->akunDebet();
         $kd_akunkredit = $this->akunKredit();
-        return view('livewire.pages.simpanan.simpanan-add', compact('kd_akundebet', 'kd_akunkredit'));
+        return view('livewire.pages.simpanan.simpanan-edit', compact('kd_akundebet', 'kd_akunkredit'));
     }
 }

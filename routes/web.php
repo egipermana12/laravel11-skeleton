@@ -7,6 +7,7 @@ use App\Livewire\Pages\Anggota;
 use App\Livewire\Pages\JurnalUmum;
 use App\Livewire\Pages\Simpanan;
 use App\Livewire\Pages\Simpanan\SimpananAdd;
+use App\Livewire\Pages\Simpanan\SimpananEdit;
 use App\Livewire\Pages\Users;
 
 Route::view('/', 'welcome');
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'verified'])->prefix('transaksianggota')->group(funct
     Route::prefix('simpanan')->group(function () {
         Route::get('/', Simpanan::class)->name('transaksianggota.simpanan')->middleware(['permission:simpanan.read|simpanan.write']);
         Route::get('add', SimpananAdd::class)->name('transaksianggota.simpanan.add')->middleware(['permission:simpanan.write']);
+        Route::get('edit/{id}', SimpananEdit::class)->name('transaksianggota.simpanan.edit')->middleware(['permission:simpanan.write']);
     });
 });
 

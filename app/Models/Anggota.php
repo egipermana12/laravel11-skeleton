@@ -35,6 +35,11 @@ class Anggota extends Model
         return $this->hasMany(Simpanan::class, 'id_anggota');
     }
 
+    public function pinjaman()
+    {
+        return $this->hasMany(Pinjaman::class, 'id_anggota');
+    }
+
     /**
      * Set the nik attribute. for encrypt nik
      */

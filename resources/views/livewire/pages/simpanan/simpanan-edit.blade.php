@@ -3,7 +3,7 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
             <div class="p-6 px-4 py-6 space-y-4 text-gray-900 dark:text-gray-100">
                 <h2 class="text-lg font-semibold text-gray-900">Tambah Anggota</h2>
-                <form wire:submit.prevent="store" class="lg:w-1/2 w-full">
+                <form wire:submit.prevent="update" class="lg:w-1/2 w-full">
                     @csrf
                     <div class="">
                         <div class="flex gap-x-2 justify-end items-end mb-4">
@@ -22,9 +22,7 @@
 
                             </div>
                             <div class="text-right">
-                                <x-primary-button wire:click="openModalCariUser" type="button" class="py-2.5">
-                                    {{ __('Cari') }}
-                                </x-primary-button>
+
                             </div>
                         </div>
                         <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.nama')" />
@@ -36,7 +34,7 @@
                         <div class="mb-4 w-full">
                             <x-input-label class="text-xs" for="form.kd_akun_kredit" :value="__('Akun Debet')" />
                             <livewire:components.select-combo wire:model.change="form.kd_akun_kredit"
-                                :selectOpsi="$kd_akunkredit" :disable="false" textAtas="Pilih Akun Kredit"
+                                :selectOpsi="$kd_akunkredit" :disable="true" textAtas="Pilih Akun Kredit"
                                 class="w-full  {{ $errors->has('form.kd_akun_kredit') ? 'error-input border-red-500' : '' }}" />
                             <x-input-error class="mt-2 text-xs" :messages="$errors->get('form.kd_akun_kredit')" />
                         </div>
@@ -97,24 +95,12 @@
                             </x-primary-button>
                         </a>
                         <x-primary-button wire:loading.attr="disable" class="ms-4">
-                            {{ __('Simpan') }}
+                            {{ __('Update') }}
                         </x-primary-button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <x-modalcustom name="user-cari" wire:model.live="modalCariUser" maxWidth="w-full">
-        <div class="flex items-center justify-between p-4">
-            <h2 class="text-lg font-semibold text-gray-900">Cari Anggota</h2>
-            <x-primary-button type="button" wire:click="$set('modalCariUser', false)" wire:loading.attr="disable"
-                class="ms-4 bg-red-500 text-white hover:bg-red-700">
-                {{ __('Batal') }}
-            </x-primary-button>
-        </div>
-        <div class="px-4 py-6 space-y-4">
-            <livewire:pages.anggota.anggota-table :show-button="true" />
-        </div>
-    </x-modalcustom>
 
 </div>
