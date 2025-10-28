@@ -8,6 +8,8 @@ use App\Livewire\Pages\JurnalUmum;
 use App\Livewire\Pages\Simpanan;
 use App\Livewire\Pages\Simpanan\SimpananAdd;
 use App\Livewire\Pages\Simpanan\SimpananEdit;
+use App\Livewire\Pages\Pinjaman;
+use App\Livewire\Pages\Pinjaman\PinjamanAdd;
 use App\Livewire\Pages\Users;
 
 Route::view('/', 'welcome');
@@ -29,6 +31,11 @@ Route::middleware(['auth', 'verified'])->prefix('transaksianggota')->group(funct
         Route::get('/', Simpanan::class)->name('transaksianggota.simpanan')->middleware(['permission:simpanan.read|simpanan.write']);
         Route::get('add', SimpananAdd::class)->name('transaksianggota.simpanan.add')->middleware(['permission:simpanan.write']);
         Route::get('edit/{id}', SimpananEdit::class)->name('transaksianggota.simpanan.edit')->middleware(['permission:simpanan.write']);
+    });
+
+    Route::prefix('pinjaman')->group(function () {
+        Route::get('/', Pinjaman::class)->name('transaksianggota.pinjaman')->middleware(['permission:pinjaman.read|pinjaman.write']);
+        Route::get('add', PinjamanAdd::class)->name('transaksianggota.pinjaman.add')->middleware(['permission:pinjaman.write']);
     });
 });
 

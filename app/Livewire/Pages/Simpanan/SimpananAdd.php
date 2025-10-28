@@ -96,6 +96,7 @@ class SimpananAdd extends Component
     {
         $kd_akundebet = $this->akunDebet();
         $kd_akunkredit = $this->akunKredit();
+
         return view('livewire.pages.simpanan.simpanan-add', compact('kd_akundebet', 'kd_akunkredit'));
     }
 }
